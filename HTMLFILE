@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+    }
+
+    #headerButtons {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .boxButton {
+      width: 100px;
+      padding: 10px;
+      text-align: center;
+      background-color: #61dafb;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .boxButton:hover {
+      background-color: #4599c6;
+    }
+
+    main {
+      display: flex;
+    }
+
+    aside {
+      width: 200px;
+      background-color: #333;
+      color: #fff;
+      padding: 20px;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    nav a {
+      display: block;
+      color: #fff;
+      text-decoration: none;
+      padding: 10px 0;
+      transition: background-color 0.3s ease;
+    }
+
+    nav a:hover {
+      background-color: #555;
+    }
+
+    section {
+      padding: 20px;
+      flex-grow: 1;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div id="headerButtons">
+      <button class="boxButton">Button 1</button>
+      <button class="boxButton">Button 2</button>
+      <button class="boxButton">Button 3</button>
+      <button class="boxButton">Button 4</button>
+    </div>
+  </header>
+
+  <main>
+    <aside>
+      <nav>
+        <a href="#">Home</a>
+        <a href="#">Dashboard</a>
+        <a href="#">Profile</a>
+        <a href="#">Settings</a>
+        <!-- Add more links as needed -->
+      </nav>
+    </aside>
+
+    <section>
+      <!-- Main content goes here -->
+    </section>
+  </main>
+</body>
+</html>
