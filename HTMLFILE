@@ -2,13 +2,45 @@ function createLineChart(canvasId, data) {
   const canvas = document.getElementById(canvasId);
   const ctx = canvas.getContext('2d');
 
-  // Extract required data from dataList2 for the line chart
-  const labels = data.map(item => item.APPLICATIONNAME);
-  const values = data.map(item => {
-    // Extract the value you want to display on the line chart, such as the number of requests
-    // You need to adjust this based on your actual data structure
-    return item.NUMBER_OF_REQUESTS; // Replace 'NUMBER_OF_REQUESTS' with the appropriate property name
+  // Extract unique application names
+  const uniqueApplications = [...new Set(data.map(item => item.APPLICATIONNAME))];
+
+  // Create select dropdown for application selection
+  const selectDropdown = document.createElement('select');
+  selectDropdown.setAttribute('id', 'selectApplication');
+  uniqueApplications.forEach(appName => {
+    const option = document.createElement('option');
+    option.text = appName;
+    selectDropdown.appendChild(option);
   });
+
+  // Add event listener to the dropdown
+  selectDropdown.addEventListener('change', () => {
+    const selectedApplication = selectDropdown.value;
+    const filteredData = data.filter(item => item.APPLICATIONNAME === selectedApplication);
+    updateLineChart(ctx, filteredData);
+  });
+
+  document.body.appendChild(selectDropdown);
+
+  // Initialize line chart with the first application's data
+  const initialData = data.filter(item => item.APPLICATIONNAME === uniqueApplications[0]);
+  updateLineChart(ctx, initialData);
+}
+
+function updateLineChart(ctx, data) {
+  // Group data by month
+  const groupedData = {};
+  data.forEach(item => {
+    const monthYear = item.CREATED_DATE.split('-').slice(0, 2).join('-');
+    if (!groupedData[monthYear]) {
+      groupedData[monthYear] = 0;
+    }
+    groupedData[monthYear] += item.NUMBER_OF_REQUESTS;
+  });
+
+  const labels = Object.keys(groupedData);
+  const values = Object.values(groupedData);
 
   new Chart(ctx, {
     type: 'line',
