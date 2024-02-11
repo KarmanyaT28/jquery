@@ -1,31 +1,23 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.2.0/d3.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.2.2/echarts.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.2.2/extension/dataTool.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.2.2/extension/bmap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.2.2/extension/wordcloud.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.2.2/extension/graphic.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.2.2/extension/bmap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.2.2/extension/dataZoom.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.2.2/extension/calendar.min.js"></script>
-<script>
-    function showRequests() {
-        document.getElementById("dataContainer1").style.display = "block";
-        document.getElementById("dataContainer2").style.display = "none";
-        document.getElementById("dataContainer3").style.display = "none";
-        document.getElementById("infoTitle").innerText = "Requests handled by Secure Automation";
+function downloadCSV() {
+    var table = document.getElementById("dataList2Table");
+    var rows = table.getElementsByTagName("tr");
+    var csv = [];
+
+    for (var i = 0; i < rows.length; i++) {
+      var row = [], cols = rows[i].querySelectorAll("td, th");
+      for (var j = 0; j < cols.length; j++) {
+        row.push(cols[j].innerText);
+      }
+      csv.push(row.join(","));
     }
 
-    function showApplications() {
-        document.getElementById("dataContainer1").style.display = "none";
-        document.getElementById("dataContainer2").style.display = "block";
-        document.getElementById("dataContainer3").style.display = "none";
-        document.getElementById("infoTitle").innerText = "Information of Applications";
-    }
+    var csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
+    var encodedUri = encodeURI(csvContent);
+    var link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "table_data.csv");
+    document.body.appendChild(link); // Required for FF
+    link.click();
+  }
 
-    function showBenefit() {
-        document.getElementById("dataContainer1").style.display = "none";
-        document.getElementById("dataContainer2").style.display = "none";
-        document.getElementById("dataContainer3").style.display = "block";
-        document.getElementById("infoTitle").innerText = "Benefit of Automation";
-    }
-</script>
+  document.getElementById("downloadCSVBtn").addEventListener("click", downloadCSV);
