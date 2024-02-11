@@ -21,7 +21,8 @@ function createLineChart(canvasId, data) {
     updateLineChart(ctx, filteredData);
   });
 
-  document.body.appendChild(selectDropdown);
+  // Append dropdown to canvas parent element
+  canvas.parentNode.appendChild(selectDropdown);
 
   // Initialize line chart with the first application's data
   const initialData = data.filter(item => item.APPLICATIONNAME === uniqueApplications[0]);
@@ -41,6 +42,9 @@ function updateLineChart(ctx, data) {
 
   const labels = Object.keys(groupedData);
   const values = Object.values(groupedData);
+
+  // Clear canvas before drawing the chart
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
   new Chart(ctx, {
     type: 'line',
