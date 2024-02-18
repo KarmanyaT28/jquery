@@ -1,5 +1,197 @@
 <!DOCTYPE html>
+<html lang="en"><!DOCTYPE html>
 <html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Secure Automation Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* CSS styles */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .header {
+      background-color: #263043;
+      color: #fff;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-title {
+      font-size: 24px;
+    }
+
+    .header-menu-icon {
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    #sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 260px;
+      background-color: #263043;
+      color: #fff;
+      padding-top: 60px; /* Adjust for header height */
+    }
+
+    .sidebar-item {
+      padding: 15px;
+      border-bottom: 1px solid #485269;
+      transition: background-color 0.3s ease;
+      cursor: pointer;
+    }
+
+    .sidebar-item:hover {
+      background-color: #485269;
+    }
+
+    .main-container {
+      margin-left: 260px; /* Same as sidebar width */
+      padding: 20px;
+    }
+
+    .card {
+      background-color: #fff;
+      border-radius: 5px;
+      padding: 20px;
+      margin-bottom: 20px;
+      cursor: pointer;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .card h3 {
+      margin-top: 0;
+    }
+
+    .chart-container {
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #263043;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #485269;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="header">
+    <div class="header-title">Secure Automation Dashboard</div>
+    <div class="header-menu-icon"><i class="fas fa-bars"></i></div>
+  </header>
+
+  <aside id="sidebar">
+    <div class="sidebar-item">Applications</div>
+    <div class="sidebar-item">Requests</div>
+    <div class="sidebar-item">Benefit</div>
+  </aside>
+
+  <main class="main-container">
+    <div class="card" id="applicationsCard">
+      <h3>Applications</h3>
+      <!-- Placeholder for Applications Chart -->
+      <div class="chart-container" id="applicationsChartContainer" style="display: none;">
+        <h2>Applications Chart</h2>
+        <canvas id="applicationsChart" width="400" height="200"></canvas>
+      </div>
+    </div>
+
+    <div class="card" id="requestsCard">
+      <h3>Requests</h3>
+      <!-- Placeholder for Requests Chart -->
+      <div class="chart-container" id="requestsChartContainer" style="display: none;">
+        <h2>Requests Chart</h2>
+        <canvas id="requestsChart" width="400" height="200"></canvas>
+      </div>
+    </div>
+
+    <div class="card" id="benefitCard">
+      <h3>Benefit</h3>
+      <!-- Placeholder for Benefit Chart -->
+      <div class="chart-container" id="benefitChartContainer" style="display: none;">
+        <h2>Benefit Chart</h2>
+        <canvas id="benefitChart" width="400" height="200"></canvas>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="startDate">Start Date:</label>
+      <input type="date" id="startDate">
+    </div>
+
+    <div class="form-group">
+      <label for="endDate">End Date:</label>
+      <input type="date" id="endDate">
+    </div>
+
+    <button id="submitBtn">Submit</button>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+  <script>
+    // JavaScript code for rendering charts using Chart.js and handling sidebar clicks
+    document.addEventListener('DOMContentLoaded', function () {
+      const sidebarItems = document.querySelectorAll('.sidebar-item');
+      const chartContainers = document.querySelectorAll('.chart-container');
+      const cards = document.querySelectorAll('.card');
+
+      sidebarItems.forEach((item, index) => {
+        item.addEventListener('click', () => {
+          chartContainers.forEach(container => {
+            container.style.display = 'none';
+          });
+          chartContainers[index].style.display = 'block';
+        });
+      });
+
+      cards.forEach(card => {
+        card.addEventListener('click', () => {
+          const chartContainer = card.querySelector('.chart-container');
+          if (chartContainer) {
+            chartContainer.style.display = 'block';
+          }
+        });
+      });
+
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.addEventListener('click', () => {
+        // Add logic to fetch data based on selected date range and update charts
+      });
+    });
+  </script>
+</body>
+</html>
+
 
 <head>
   <meta charset="UTF-8">
