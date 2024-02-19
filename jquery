@@ -1,192 +1,511 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Secure Automation Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-    /* CSS styles */
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Montserrat', sans-serif;
-    }
+ <script>
 
-    .header {
-      background-color: #263043;
-      color: #fff;
-      padding: 10px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
 
-    .header-title {
-      font-size: 24px;
-    }
 
-    .header-menu-icon {
-      font-size: 20px;
-      cursor: pointer;
-    }
+        function downloadCSV() {
+        var table = document.getElementById("dataList2Table");
+        var rows = table.getElementsByTagName("tr");
+        var csv = [];
 
-    #sidebar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      width: 260px;
-      background-color: #263043;
-      color: #fff;
-      padding-top: 60px; /* Adjust for header height */
-    }
-
-    .sidebar-item {
-      padding: 15px;
-      border-bottom: 1px solid #485269;
-      transition: background-color 0.3s ease;
-      cursor: pointer;
-    }
-
-    .sidebar-item:hover {
-      background-color: #485269;
-    }
-
-    .main-container {
-      margin-left: 260px; /* Same as sidebar width */
-      padding: 20px;
-    }
-
-    .card {
-      background-color: #fff;
-      border-radius: 5px;
-      padding: 20px;
-      margin-bottom: 20px;
-      cursor: pointer;
-      transition: box-shadow 0.3s ease;
-    }
-
-    .card:hover {
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .card h3 {
-      margin-top: 0;
-    }
-
-    .chart-container {
-      margin-bottom: 20px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      padding: 20px;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    button {
-      padding: 10px 20px;
-      background-color: #263043;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #485269;
-    }
-  </style>
-</head>
-
-<body>
-  <header class="header">
-    <div class="header-title">Secure Automation Dashboard</div>
-    <div class="header-menu-icon"><i class="fas fa-bars"></i></div>
-  </header>
-
-  <aside id="sidebar">
-    <div class="sidebar-item">Applications</div>
-    <div class="sidebar-item">Requests</div>
-    <div class="sidebar-item">Benefit</div>
-  </aside>
-
-  <main class="main-container">
-    <div class="card" id="applicationsCard">
-      <h3>Applications</h3>
-      <!-- Placeholder for Applications Chart -->
-      <div class="chart-container" id="applicationsChartContainer" style="display: none;">
-        <h2>Applications Chart</h2>
-        <canvas id="applicationsChart" width="400" height="200"></canvas>
-      </div>
-    </div>
-
-    <div class="card" id="requestsCard">
-      <h3>Requests</h3>
-      <!-- Placeholder for Requests Chart -->
-      <div class="chart-container" id="requestsChartContainer" style="display: none;">
-        <h2>Requests Chart</h2>
-        <canvas id="requestsChart" width="400" height="200"></canvas>
-      </div>
-    </div>
-
-    <div class="card" id="benefitCard">
-      <h3>Benefit</h3>
-      <!-- Placeholder for Benefit Chart -->
-      <div class="chart-container" id="benefitChartContainer" style="display: none;">
-        <h2>Benefit Chart</h2>
-        <canvas id="benefitChart" width="400" height="200"></canvas>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="startDate">Start Date:</label>
-      <input type="date" id="startDate">
-    </div>
-
-    <div class="form-group">
-      <label for="endDate">End Date:</label>
-      <input type="date" id="endDate">
-    </div>
-
-    <button id="submitBtn">Submit</button>
-  </main>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
-  <script>
-    // JavaScript code for rendering charts using Chart.js and handling sidebar clicks
-    document.addEventListener('DOMContentLoaded', function () {
-      const sidebarItems = document.querySelectorAll('.sidebar-item');
-      const chartContainers = document.querySelectorAll('.chart-container');
-      const cards = document.querySelectorAll('.card');
-
-      sidebarItems.forEach((item, index) => {
-        item.addEventListener('click', () => {
-          chartContainers.forEach(container => {
-            container.style.display = 'none';
-          });
-          chartContainers[index].style.display = 'block';
-        });
-      });
-
-      cards.forEach(card => {
-        card.addEventListener('click', () => {
-          const chartContainer = card.querySelector('.chart-container');
-          if (chartContainer) {
-            chartContainer.style.display = 'block';
+        for (var i = 0; i < rows.length; i++) {
+          var row = [], cols = rows[i].querySelectorAll("td, th");
+          for (var j = 0; j < cols.length; j++) {
+            row.push(cols[j].innerText);
           }
+          csv.push(row.join(","));
+        }
+
+        var csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "table_data.csv");
+        document.body.appendChild(link); // Required for FF
+        link.click();
+      }
+
+    document.getElementById("downloadCSVBtn").addEventListener("click", downloadCSV);
+     function showRequests() {
+        
+          var dataContainer2 =document.getElementById("dataContainer2");
+          var charts = document.getElementById("linechartsContainer");
+          var charts1 = document.getElementById("piechartsContainer");
+          var charts2 = document.getElementById("barchartsContainer");
+          var dateContainer = document.getElementById("dateContainer");
+          var meter = document.getElementById("meter");
+          // var chartsContainer1 = document.getElementById("chartsContainer1");
+
+          
+          //Show dataContainer2
+          charts.style.display = "block";
+          dataContainer2.style.display = "block";
+          charts1.style.display = "none";
+          charts2.style.display = "none";
+          dateContainer.style.display = "block";
+          meter.style.display ="none";
+          // charts.style.display = "none";
+
+          //Hide charts
+          //  for(var i=0 ; i< charts.length;i++){
+          //   charts[i].style.display = "none";
+          //  }
+      }
+  
+      function showApplications() {
+         
+          var dataContainer2 =document.getElementById("dataContainer2");
+          var charts2 = document.getElementById("linechartsContainer");
+          var dateContainer = document.getElementById("dateContainer");
+          var charts = document.getElementById("piechartsContainer");
+          var charts1 = document.getElementById("barchartsContainer");
+          var meter = document.getElementById("meter");
+          //Hide dataContainer2
+          
+          dataContainer2.style.display = "none";
+          dateContainer.style.display = "block";
+          charts.style.display = "block";
+          charts1.style.display = "block";
+          charts2.style.display = "none";
+          meter.style.display ="none";
+          // dataContainer2.style.display = "block";
+          
+
+          // SHOW charts
+          //  for(var i=0 ; i< charts.length;i++){
+          //   charts[i].style.display = "block";
+          //  }
+      }
+  
+      function showBenefit() {
+        var meter = document.getElementById("meter");
+        var dataContainer2 =document.getElementById("dataContainer2");
+          var charts2 = document.getElementById("linechartsContainer");
+          var dateContainer = document.getElementById("dateContainer");
+          var charts = document.getElementById("piechartsContainer");
+          var charts1 = document.getElementById("barchartsContainer");
+
+
+
+        meter.style.display ="block";
+        dataContainer2.style.display = "none";
+          dateContainer.style.display = "none";
+          charts.style.display = "none";
+          charts1.style.display = "none";
+          charts2.style.display = "none";
+      }
+
+    function fetchData() {
+      // Add logic to fetch data based on the selected date range
+      const startDate = document.getElementById('startDate').value;
+      const endDate = document.getElementById('endDate').value;
+
+      // Example URL for data fetching (modify as needed)
+      const url = `/data?startDate=${startDate}&endDate=${endDate}`;
+
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          // Check if data is available
+          if (data && data.data1 && data.data2) {
+            const filteredData = data.data2.filter(item => {
+              const createdDate = new Date(item.CREATED_DATE).toISOString().split('T')[0];
+              return createdDate >= startDate && createdDate <= endDate;
+            });
+            // Display data for Data Set 1
+            displayData('dataList1', data.data1);
+
+            // Display data for Data Set 2
+            displayDataTable('dataList2Table', filteredData);
+
+            // Create Bar Chart
+            createBarChart('barChart', filteredData);
+
+            // Create Pie Chart
+            createPieChart('pieChart', filteredData);
+
+            // Create Line Graph
+            // createLineChart('lineChart', filteredData);
+            displayLineChart(filteredData);
+
+            //Meter
+            updateMeterWithData(data.data1);
+          } else {
+            console.error('Data is missing or invalid.');
+          }
+        })
+        .catch(error => console.error('Error fetching data:', error));
+    }
+
+
+
+
+
+    //Function to display data in DataTable Format
+    function displayDataTable(tableId , data){
+      // Destroy existing datatable if exists
+      if ($.fn.DataTable.isDataTable(`#${tableId}`)) {
+        $(`#${tableId}`).DataTable().destroy();
+      }
+      //Create a DataTable with paging
+
+      $(`#${tableId}`).DataTable({
+        data: data,
+        columns: [
+          {title: 'REQUESTNO', data: 'REQUESTNO' , render:function(data,type,row,meta){
+            return  `<a href="https://secure.uhc.com/User/ViewRequestDetail?requestId=${data}">${data}</a>`;
+          }},
+          {title: 'SUBREQUEST_NO', data: 'SUBREQUEST_NO'},
+          {title: 'APPLICATIONNAME', data: 'APPLICATIONNAME'},
+          {title: 'ENVIRONMENT', data: 'ENVIRONMENT'},
+          {title: 'REQUESTED_FOR', data: 'REQUESTED_FOR'},
+          {title: 'CREATED_DATE', data: 'CREATED_DATE'},
+          {title: 'ROLE_NAME', data: 'ROLE_NAME'},
+          {title: 'ROLE_STATUS', data: 'ROLE_STATUS'},
+          {title: 'REQUEST_STATUS', data: 'REQUEST_STATUS'},
+          {title: 'UPDATED_DATE', data: 'UPDATED_DATE'},
+          {title: 'COMMENTS', data: 'COMMENTS'},
+          {title: 'USER_TL_ID', data: 'USER_TL_ID'},
+        ],
+        pageLength:5, // number of requests per page
+      });
+    }
+    // Function to update charts based on the selected date range
+    function updateCharts() {
+      fetchData();
+    }
+   
+
+		function displayDataF(listId, data) {
+      const dataListElement = document.getElementById(listId);
+
+      // Check if data is available
+      if (data && data.length > 0) {
+        data.forEach(item => {
+          // Create a list item
+          const listItem = document.createElement('li');
+          listItem.className = 'list-group-item';
+
+          // Set the content of the list item based on all properties
+          Object.keys(item).forEach(key => {
+            listItem.innerHTML += `<strong>${key}:</strong> ${item[key]}<br>`;
+          });
+
+          // Append the list item to the ul element
+          dataListElement.appendChild(listItem);
         });
+      } else {
+        // If no data is available, create a placeholder list item
+        const listItem = document.createElement('li');
+        listItem.className = 'list-group-item';
+        listItem.textContent = 'No data available';
+        dataListElement.appendChild(listItem);
+      }
+    }
+
+
+
+      function displayData2(listId, data) {
+      const dataListElement = document.getElementById(listId);
+
+      // Check if data is available
+      if (data && data.length > 0) {
+        data.forEach(item => {
+          // Create a list item
+          const listItem = document.createElement('li');
+          listItem.className = 'list-group-item';
+
+          // Set the content of the list item based on all properties
+          Object.keys(item).forEach(key => {
+            listItem.innerHTML += `<strong>${key}:</strong> ${item[key]}<br>`;
+          });
+
+          // Append the list item to the ul element
+          dataListElement.appendChild(listItem);
+        });
+      } else {
+        // If no data is available, create a placeholder list item
+        const listItem = document.createElement('li');
+        listItem.className = 'list-group-item';
+        listItem.textContent = 'No data available';
+        dataListElement.appendChild(listItem);
+      }
+    }
+
+    
+
+    
+    function displayData(listId, data) {
+      const dataListElement = document.getElementById(listId);
+
+      // Check if data is available
+      if (data && data.length > 0) {
+        data.forEach(item => {
+          const listItem = document.createElement('li');
+          const columnValue = data[0]['1'] || 'N/A';
+          listItem.className = 'list-group-item';
+          listItem.textContent = ` ${columnValue}`;
+          dataListElement.appendChild(listItem);
+
+
+          
+          
+          
+          
+          
+        });
+      } else {
+        // If no data is available, create a placeholder list item
+        const listItem = document.createElement('li');
+        listItem.className = 'list-group-item';
+        listItem.textContent = 'No data available';
+        dataListElement.appendChild(listItem);
+      }
+    }
+
+
+      function createBarChart(canvasId, data) {
+      const canvas = document.getElementById(canvasId);
+      const ctx = canvas.getContext('2d');
+
+      // Group data by APPLICATIONNAME and REQUEST_STATUS
+      const groupedData = data.reduce((acc, item) => {
+        const appName = item.APPLICATIONNAME;
+        const requestStatus = item.REQUEST_STATUS;
+        
+        if (!acc[appName]) {
+          acc[appName] = {
+            C: 0,
+            RL: 0
+          };
+        }
+
+        acc[appName][requestStatus]++;
+        return acc;
+      }, {});
+
+      const labels = Object.keys(groupedData);
+      const datasets = Object.entries(groupedData).map(([appName, counts]) => {
+        return {
+          label: appName,
+          data: [counts.C, counts.RL],
+          backgroundColor: [
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(255, 99, 132, 0.2)'
+          ],
+          borderColor: [
+            'rgba(75, 192, 192, 1)',
+            'rgba(255, 99, 132, 1)'
+          ],
+          borderWidth: 1
+        };
       });
 
-      const submitBtn = document.getElementById('submitBtn');
-      submitBtn.addEventListener('click', () => {
-        // Add logic to fetch data based on selected date range and update charts
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['C', 'RL'],
+          datasets: datasets
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
       });
-    });
+    }
+
+
+
+	
+
+      function createPieChart(canvasId, data) {
+      const canvas = document.getElementById(canvasId);
+      const ctx = canvas.getContext('2d');
+
+      // Group data by APPLICATIONNAME and count occurrences
+      const groupedData = data.reduce((acc, item) => {
+        const appName = item.APPLICATIONNAME;
+        acc[appName] = (acc[appName] || 0) + 1;
+        return acc;
+      }, {});
+
+      const labels = Object.keys(groupedData);
+      const values = Object.values(groupedData);
+
+      new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: values,
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+          }]
+        }
+      });
+    }
+
+
+
+      function createLineChart(canvasId, data) {
+      const canvas = document.getElementById(canvasId);
+      const ctx = canvas.getContext('2d');
+
+      // Extract unique application names
+      const groupedData = {};
+      for(let i=0;i<12;i++)
+      {
+        const month = (i+1).toString().padStart(2,'0');
+        groupedData[month]=0;
+      }
+      data.forEach(item => {
+        const month = item.CREATED_DATE.split('-')[1];
+        groupedData[month] += item.NUMBER_OF_REQUESTS;
+      });
+
+      const months = Object.keys(groupedData);
+      const requests = Object.values(groupedData);
+
+
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels:months,
+          datasets:[{
+            label:'Number of Requests',
+            data:requests,
+            borderColor:'blue',
+            backgroundColor:'rgba(0,0,255,0.1)',
+          }]
+        },
+        options:{
+          scales:{
+            y:{
+              beginAtZero:true,
+              title:{
+                display:true,
+                text:'Number of Requests'
+              }
+            },
+            x:{
+              title:{
+                display:true,
+                text:'Months'
+              }
+            }
+          }
+        }
+      });
+
+     
+
+
+
+
+
+
+      
+    }
+
+    function updateLineChart(ctx, data) {
+      // Group data by month
+      const groupedData = {};
+      data.forEach(item => {
+        const monthYear = item.CREATED_DATE.split('-').slice(0, 2).join('-');
+        if (!groupedData[monthYear]) {
+          groupedData[monthYear] = 0;
+        }
+        groupedData[monthYear] += item.NUMBER_OF_REQUESTS;
+      });
+
+      const labels = Object.keys(groupedData);
+      const values = Object.values(groupedData);
+
+      // Clear canvas before drawing the chart
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Number of Requests',
+            data: values,
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+
+
+    function displayLineChart(data){
+      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      const requestsClosedPerMonth = new Array(12).fill(0);
+
+
+      data.forEach(entry => {
+        const monthIndex = new Date(entry.CREATED_DATE).getMonth();
+
+        requestsClosedPerMonth[monthIndex]++;
+      });
+
+      const ctx = document.getElementById('lineChartCanvas').getContext('2d');
+      new Chart(ctx, {
+        type:'line',
+        data:{
+          labels:months,
+          datasets:[{
+            label:'Number of Requests Closed',
+            data: requestsClosedPerMonth,
+            borderColor:'blue',
+            backgroundColor:'rgba(0,0,255,0.1)',
+          }]
+        },
+        options: {
+          scales:{
+            yAxes:[{
+              scaleLabel:{
+                display:true,
+                labelString:'Number of Requests Closed'
+              },
+              ticks:{
+                beginAtZero:true
+              }
+            }],
+            xAxes:[{
+              scaleLabel:{
+                display:true,
+                labelString:'Months'
+              }
+            }]
+          }
+        }
+      });
+    }
   </script>
-</body>
-</html>
